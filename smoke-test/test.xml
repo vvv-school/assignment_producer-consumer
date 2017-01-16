@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suit name="Test assignment producer/consumer">
+    <description>Testing the producer consumer assignment</description>
+    <environment></environment>
+    <fixture param="--fixture fixture.xml"> yarpmanager </fixture>
+    <test type="dll" param="--module producer"> TestAssignmentProducerConsumer </test>
+    <test type="dll" param="--module consumer"> TestAssignmentProducerConsumer </test>
+</suit>
+

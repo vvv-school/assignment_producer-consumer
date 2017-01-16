@@ -1,0 +1,48 @@
+<application>
+    <name>Fixture for assignement producer/consumer</name>
+    <description>A fixture to prepare components required for the assignment</description>
+    <version>1.0</version>
+    <authors>
+        <author email="ali.paikan@iit.it">Ali Paikan</author>
+    </authors>
+    <module>
+        <name>producer</name>
+        <parameters>--async</parameters>
+        <prefix>/async</prefix>
+        <node>testnode</node>
+        <ensure>
+            <wait>2.0</wait>
+        </ensure>
+    </module>
+    <module>
+        <name>producer</name>
+        <parameters></parameters>
+        <prefix>/sync</prefix>
+        <node>testnode</node>
+    </module>
+    <module>
+        <name>consumer</name>
+        <parameters></parameters>
+        <prefix>/first</prefix>
+        <node>testnode</node>
+         <ensure>
+            <wait>2.0</wait>
+        </ensure>      
+    </module>
+    <module>
+        <name>consumer</name>
+        <parameters>--delay 1.0</parameters>
+        <prefix>/second</prefix>
+        <node>testnode</node>
+    </module>
+
+  <connection>
+      <from>/sync/producer/out</from>
+      <to>/first/consumer/in</to>
+  </connection>
+  <connection>
+      <from>/sync/producer/out</from>
+      <to>/second/consumer/in</to>
+  </connection>
+</application>
+
