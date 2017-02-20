@@ -8,8 +8,10 @@
 #include <cmath>
 #include <algorithm>
 
-#include <rtf/yarp/YarpTestCase.h>
+#include <yarp/rtf/TestCase.h>
 #include <rtf/dll/Plugin.h>
+#include <rtf/TestAssert.h>
+
 
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
@@ -27,9 +29,9 @@ using namespace yarp::math;
 
 class Interrupter : public Thread {
     double timeout;
-    YarpTestCase* testCase;
+    yarp::rtf::TestCase* testCase;
 public:
-        Interrupter(YarpTestCase* test, double timeout=1.0) : testCase(test) {
+        Interrupter(yarp::rtf::TestCase* test, double timeout=1.0) : testCase(test) {
             setTimeout(timeout);
         }
         void setTimeout(double timeout) {
@@ -50,7 +52,7 @@ public:
 };
 
 /**********************************************************************/
-class TestAssignmentProducerConsumer : public YarpTestCase
+class TestAssignmentProducerConsumer : public yarp::rtf::TestCase
 {
 private:
         BufferedPort<Bottle> port;
@@ -59,7 +61,7 @@ private:
 public:
     /******************************************************************/
     TestAssignmentProducerConsumer() : timer(this, PORT_READ_TIMEOUT),
-        YarpTestCase("TestAssignmentProducerConsumer") { }
+        yarp::rtf::TestCase("TestAssignmentProducerConsumer") { }
 
     /******************************************************************/
     virtual ~TestAssignmentProducerConsumer() {
