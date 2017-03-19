@@ -37,7 +37,7 @@ $ ./consumer
 ```
 - connect the **producer** to the **consumer** using `tcp' 
 ```
-$ connect /producer/out /consumer/in tcp
+$ yarp connect /producer/out /consumer/in tcp
 ```
 - read the measured data rate using yarp command , i.e. `yarp read ... /consumer/out` and see your measurment. 
 - repeat the above scenario using `udp` connection and/or `BufferedPort` (i.e. `--async`) to see if you notice any difference in data rate!
@@ -53,7 +53,7 @@ $ YARP_PORT_PREFIX=/second ./consumer --delay 1.0
 ```
 The **`YARP_PORT_PREFIX=/second`** environment variable simply adds a prefix (i.e. `/second`) to all the port which are opened by **`consumer`**. Thus to connect the producer to the second consumer you shoud type: 
 ```
-connect /producer/out /second/consumer/in tcp
+yarp connect /producer/out /second/consumer/in tcp
 ```
 - At first use only `tcp` carrier for all the connections. Check the data rate measured by the first consumer (as the previous scenario) to see if there is any difference. 
 - repeat the scenario using 'udp' connections and see the difference. 
