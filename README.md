@@ -3,9 +3,9 @@ Sync/async data-flow communication
 
 # Prerequisites
 By now, you should be an expert of the following components :wink::
-- [yarp::os::Port] (http://www.yarp.it/classyarp_1_1os_1_1Port.html)
-- [yarp::os::BufferedPort] (http://www.yarp.it/classyarp_1_1os_1_1BufferedPort.html)
-- [the main YARP command-line interfaces] (http://www.yarp.it/yarp.html)
+- [yarp::os::Port](http://www.yarp.it/classyarp_1_1os_1_1Port.html)
+- [yarp::os::BufferedPort](http://www.yarp.it/classyarp_1_1os_1_1BufferedPort.html)
+- [the main YARP command-line interfaces](http://www.yarp.it/yarp.html)
 
 # Assignment
 This assignment evaluates your understanding of sync/async data-flow communication in YARP. 
