@@ -69,20 +69,20 @@ public:
 
     /******************************************************************/
     virtual bool setup(yarp::os::Property& property) {
-        RTF_ASSERT_ERROR_IF(property.check("module"), "Missing 'module' parameter");
+        RTF_ASSERT_ERROR_IF_FALSE(property.check("module"), "Missing 'module' parameter");
 
         which = property.find("module").asString();
         RTF_TEST_REPORT(Asserter::format("Testing %s module", which.c_str()));
         Contact contact("/TestAssignmentProducerConsumer/io");
         contact.setTimeout(5.0);
-        RTF_ASSERT_ERROR_IF(port.open(contact), "Cannot open the test port");
+        RTF_ASSERT_ERROR_IF_FALSE(port.open(contact), "Cannot open the test port");
         if(which == "producer") {
-            RTF_ASSERT_ERROR_IF(NetworkBase::connect("/async/producer/out", port.getName()),
-                                "Cannot connect to /async/producer/out");
+            RTF_ASSERT_ERROR_IF_FALSE(NetworkBase::connect("/async/producer/out", port.getName()),
+                                      "Cannot connect to /async/producer/out");
         }
         else if(which == "consumer") {
-            RTF_ASSERT_ERROR_IF(NetworkBase::connect("/first/consumer/out", port.getName()),
-                                "Cannot connect to /first/consumer/out");
+            RTF_ASSERT_ERROR_IF_FALSE(NetworkBase::connect("/first/consumer/out", port.getName()),
+                                      "Cannot connect to /first/consumer/out");
         }
         else
             RTF_ASSERT_ERROR(Asserter::format("Got wrong value (%s) for 'module' param", which.c_str()));
@@ -112,7 +112,7 @@ public:
                 timer.start();
                 data = port.read();
                 timer.stop();
-                RTF_ASSERT_ERROR_IF(data, "Cannot read from the port");
+                RTF_ASSERT_ERROR_IF_FALSE(data, "Cannot read from the port");
             }
             RTF_TEST_REPORT("Cheking data size of producer module");
             RTF_ASSERT_FAIL_IF(data->size()==1,
@@ -125,7 +125,7 @@ public:
             timer.start();
             data = port.read();
             timer.stop();
-            RTF_ASSERT_ERROR_IF(data, "Cannot read from the port");
+            RTF_ASSERT_ERROR_IF_FALSE(data, "Cannot read from the port");
             RTF_ASSERT_FAIL_IF(data->size()>=1,
                                Asserter::format("Wrong data size (expected size>1, got size=%d)", data->size()));
             RTF_TEST_CHECK(data->get(0).isDouble(), "data type");
