@@ -115,8 +115,8 @@ public:
                 RTF_ASSERT_ERROR_IF_FALSE(data, "Cannot read from the port");
             }
             RTF_TEST_REPORT("Cheking data size of producer module");
-            RTF_ASSERT_FAIL_IF(data->size()==1,
-                               Asserter::format("Wrong data size (expected size=1, got size=%d)", data->size()));
+            RTF_ASSERT_FAIL_IF_FALSE(data->size()==1,
+                                     Asserter::format("Wrong data size (expected size=1, got size=%d)", data->size()));
             RTF_TEST_CHECK(data->get(0).isInt(), "data type");
             RTF_TEST_REPORT(Asserter::format("Got %s", data->toString().c_str()));
         }
@@ -126,8 +126,8 @@ public:
             data = port.read();
             timer.stop();
             RTF_ASSERT_ERROR_IF_FALSE(data, "Cannot read from the port");
-            RTF_ASSERT_FAIL_IF(data->size()>=1,
-                               Asserter::format("Wrong data size (expected size>1, got size=%d)", data->size()));
+            RTF_ASSERT_FAIL_IF_FALSE(data->size()>=1,
+                                     Asserter::format("Wrong data size (expected size>1, got size=%d)", data->size()));
             RTF_TEST_CHECK(data->get(0).isDouble(), "data type");
             RTF_TEST_REPORT(Asserter::format("Got %s", data->toString().c_str()));
         }
