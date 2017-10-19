@@ -4,11 +4,12 @@
 #include <yarp/os/Port.h>
 #include <yarp/os/BufferedPort.h>
 #include <yarp/os/Property.h>
-#include <yarp/os/Random.h>
 #include <yarp/os/Time.h>
+#include <yarp/math/Rand.h>
 
 using namespace std;
 using namespace yarp::os;
+using namespace yarp::math;
 
 int produce_sync() {
     Port outPort;
@@ -17,7 +18,7 @@ int produce_sync() {
 
     while(true) {        
         Bottle data;
-        // add a random value using Random::uniform(1,100) to the bottle
+        // add a random value using Rand::scalar(1,100) to the bottle
         //...
 
         // write to the port
@@ -35,7 +36,7 @@ int produce_async() {
     //...
 
     while(true) {
-        // add a random value using Random::uniform(1,100) to a bottle
+        // add a random value using Rand::scalar(1,100) to a bottle
         //...
 
         // write to the port
