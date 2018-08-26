@@ -12,16 +12,13 @@
 #include <rtf/dll/Plugin.h>
 #include <rtf/TestAssert.h>
 
-
 #include <yarp/os/all.h>
-#include <yarp/dev/all.h>
 #include <yarp/sig/all.h>
 #include <yarp/math/Math.h>
 
 using namespace std;
 using namespace RTF;
 using namespace yarp::os;
-using namespace yarp::dev;
 using namespace yarp::sig;
 using namespace yarp::math;
 

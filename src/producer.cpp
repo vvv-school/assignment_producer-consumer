@@ -1,4 +1,6 @@
 
+#include <cstdlib>
+
 #include <yarp/os/Network.h>
 #include <yarp/os/LogStream.h>
 #include <yarp/os/Port.h>
@@ -16,7 +18,7 @@ int produce_sync() {
     // open the output port
     //...
 
-    while(true) {        
+    while(true) {
         Bottle data;
         // add a random value using Rand::scalar(1,100) to the bottle
         //...
@@ -27,7 +29,8 @@ int produce_sync() {
         // delay for 100ms
         Time::delay(0.1);
     }
-    return 0;
+
+    return EXIT_SUCCESS;
 }
 
 int produce_async() {
@@ -46,7 +49,7 @@ int produce_async() {
         Time::delay(0.1);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 

@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 #include <yarp/os/Network.h>
 #include <yarp/os/LogStream.h>
 #include <yarp/os/Port.h>
@@ -8,7 +10,7 @@ using namespace std;
 using namespace yarp::os;
 
 int main(int argc, char *argv[]) {
-    Network yarp;    
+    Network yarp;
 
     Property prop;
     prop.fromCommand(argc, argv);
@@ -17,7 +19,6 @@ int main(int argc, char *argv[]) {
         delay = prop.find("delay").asDouble();
         yInfo()<<"Consumer delays reading by"<<delay<<"seconds.";
     }
-
 
     Port inPort, outPort;
     // open "/consumer/in" and  "/consumer/out" ports
@@ -37,5 +38,6 @@ int main(int argc, char *argv[]) {
         // delay the reading
         Time::delay(delay);
     }
-    return 0;
+
+    return EXIT_SUCCESS;
 }
