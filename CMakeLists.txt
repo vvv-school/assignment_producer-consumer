@@ -18,16 +18,15 @@ include(ICUBcontribOptions)
 # specify to install in $ICUBcontrib_DIR/bin
 icubcontrib_set_default_prefix()
 
-# import math symbols from standard cmath
-add_definitions(-D_USE_MATH_DEFINES)
-
 # building client
 add_executable(producer ${CMAKE_SOURCE_DIR}/src/producer.cpp)
+target_compile_definitions(producer PRIVATE _USE_MATH_DEFINES)
 target_link_libraries(producer ${YARP_LIBRARIES})
 install(TARGETS producer DESTINATION bin)
 
 # building server
 add_executable(consumer ${CMAKE_SOURCE_DIR/}src/consumer.cpp)
+target_compile_definitions(consumer PRIVATE _USE_MATH_DEFINES)
 target_link_libraries(consumer ${YARP_LIBRARIES})
 install(TARGETS consumer DESTINATION bin)
 
