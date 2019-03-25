@@ -8,16 +8,16 @@
 #include <cmath>
 #include <algorithm>
 
-#include <yarp/rtf/TestCase.h>
-#include <rtf/dll/Plugin.h>
-#include <rtf/TestAssert.h>
+#include <yarp/robottestingframework/TestCase.h>
+#include <robottestingframework/dll/Plugin.h>
+#include <robottestingframework/TestAssert.h>
 
 #include <yarp/os/all.h>
 #include <yarp/sig/all.h>
 #include <yarp/math/Math.h>
 
 using namespace std;
-using namespace RTF;
+using namespace robottestingframework;
 using namespace yarp::os;
 using namespace yarp::sig;
 using namespace yarp::math;
@@ -26,9 +26,9 @@ using namespace yarp::math;
 
 class Interrupter : public Thread {
     double timeout;
-    yarp::rtf::TestCase* testCase;
+    yarp::robottestingframework::TestCase* testCase;
 public:
-        Interrupter(yarp::rtf::TestCase* test, double timeout=1.0) : testCase(test) {
+        Interrupter(yarp::robottestingframework::TestCase* test, double timeout=1.0) : testCase(test) {
             setTimeout(timeout);
         }
         void setTimeout(double timeout) {
@@ -39,17 +39,17 @@ public:
             while (((Time::now() - t1) < timeout) && (!isStopping()))
                 Time::delay(0.5);
             if((Time::now() - t1) >= timeout) {
-                RTF::Asserter::report(RTF::TestMessage("reports",
+                robottestingframework::Asserter::report(robottestingframework::TestMessage("reports",
                                       "Interrupting the test (timeout)",
-                                      RTF_SOURCEFILE(),
-                                      RTF_SOURCELINE()), testCase);
+                                      ROBOTTESTINGFRAMEWORK_SOURCEFILE(),
+                                      ROBOTTESTINGFRAMEWORK_SOURCELINE()), testCase);
                 testCase->interrupt();
             }
         }
 };
 
 /**********************************************************************/
-class TestAssignmentProducerConsumer : public yarp::rtf::TestCase
+class TestAssignmentProducerConsumer : public yarp::robottestingframework::TestCase
 {
 private:
         BufferedPort<Bottle> port;
@@ -58,7 +58,7 @@ private:
 public:
     /******************************************************************/
     TestAssignmentProducerConsumer() : timer(this, PORT_READ_TIMEOUT),
-        yarp::rtf::TestCase("TestAssignmentProducerConsumer") { }
+        yarp::robottestingframework::TestCase("TestAssignmentProducerConsumer") { }
 
     /******************************************************************/
     virtual ~TestAssignmentProducerConsumer() {
@@ -66,30 +66,30 @@ public:
 
     /******************************************************************/
     virtual bool setup(yarp::os::Property& property) {
-        RTF_ASSERT_ERROR_IF_FALSE(property.check("module"), "Missing 'module' parameter");
+        ROBOTTESTINGFRAMEWORK_ASSERT_ERROR_IF_FALSE(property.check("module"), "Missing 'module' parameter");
 
         which = property.find("module").asString();
-        RTF_TEST_REPORT(Asserter::format("Testing %s module", which.c_str()));
+        ROBOTTESTINGFRAMEWORK_TEST_REPORT(Asserter::format("Testing %s module", which.c_str()));
         Contact contact("/TestAssignmentProducerConsumer/io");
         contact.setTimeout(5.0);
-        RTF_ASSERT_ERROR_IF_FALSE(port.open(contact), "Cannot open the test port");
+        ROBOTTESTINGFRAMEWORK_ASSERT_ERROR_IF_FALSE(port.open(contact), "Cannot open the test port");
         if(which == "producer") {
-            RTF_ASSERT_ERROR_IF_FALSE(NetworkBase::connect("/async/producer/out", port.getName()),
+            ROBOTTESTINGFRAMEWORK_ASSERT_ERROR_IF_FALSE(NetworkBase::connect("/async/producer/out", port.getName()),
                                       "Cannot connect to /async/producer/out");
         }
         else if(which == "consumer") {
-            RTF_ASSERT_ERROR_IF_FALSE(NetworkBase::connect("/first/consumer/out", port.getName()),
+            ROBOTTESTINGFRAMEWORK_ASSERT_ERROR_IF_FALSE(NetworkBase::connect("/first/consumer/out", port.getName()),
                                       "Cannot connect to /first/consumer/out");
         }
         else
-            RTF_ASSERT_ERROR(Asserter::format("Got wrong value (%s) for 'module' param", which.c_str()));
+            ROBOTTESTINGFRAMEWORK_ASSERT_ERROR(Asserter::format("Got wrong value (%s) for 'module' param", which.c_str()));
         return true;
     }
 
     /******************************************************************/
     virtual void tearDown() {
         timer.stop();
-        RTF_TEST_REPORT("Tearing down TestAssignmentProducerConsumer");
+        ROBOTTESTINGFRAMEWORK_TEST_REPORT("Tearing down TestAssignmentProducerConsumer");
         if(which == "producer")
             NetworkBase::disconnect("/async/producer/out", port.getName());
         else
@@ -105,28 +105,28 @@ public:
         // by user
         if(which == "producer") {
             for (int i=0; i<5; i++) {
-                RTF_TEST_REPORT(Asserter::format("Reading data from '/async/producer/out'. itteration %d", i));
+                ROBOTTESTINGFRAMEWORK_TEST_REPORT(Asserter::format("Reading data from '/async/producer/out'. itteration %d", i));
                 timer.start();
                 data = port.read();
                 timer.stop();
-                RTF_ASSERT_ERROR_IF_FALSE(data, "Cannot read from the port");
+                ROBOTTESTINGFRAMEWORK_ASSERT_ERROR_IF_FALSE(data, "Cannot read from the port");
             }
-            RTF_TEST_REPORT("Cheking data size of producer module");
-            RTF_ASSERT_FAIL_IF_FALSE(data->size()==1,
+            ROBOTTESTINGFRAMEWORK_TEST_REPORT("Cheking data size of producer module");
+            ROBOTTESTINGFRAMEWORK_ASSERT_FAIL_IF_FALSE(data->size()==1,
                                      Asserter::format("Wrong data size (expected size=1, got size=%d)", data->size()));
-            RTF_TEST_CHECK(data->get(0).isInt(), "data type");
-            RTF_TEST_REPORT(Asserter::format("Got %s", data->toString().c_str()));
+            ROBOTTESTINGFRAMEWORK_TEST_CHECK(data->get(0).isInt(), "data type");
+            ROBOTTESTINGFRAMEWORK_TEST_REPORT(Asserter::format("Got %s", data->toString().c_str()));
         }
         else {
-            RTF_TEST_REPORT("Reading data from '/first/consumer/out' ...");
+            ROBOTTESTINGFRAMEWORK_TEST_REPORT("Reading data from '/first/consumer/out' ...");
             timer.start();
             data = port.read();
             timer.stop();
-            RTF_ASSERT_ERROR_IF_FALSE(data, "Cannot read from the port");
-            RTF_ASSERT_FAIL_IF_FALSE(data->size()>=1,
+            ROBOTTESTINGFRAMEWORK_ASSERT_ERROR_IF_FALSE(data, "Cannot read from the port");
+            ROBOTTESTINGFRAMEWORK_ASSERT_FAIL_IF_FALSE(data->size()>=1,
                                      Asserter::format("Wrong data size (expected size>1, got size=%d)", data->size()));
-            RTF_TEST_CHECK(data->get(0).isDouble(), "data type");
-            RTF_TEST_REPORT(Asserter::format("Got %s", data->toString().c_str()));
+            ROBOTTESTINGFRAMEWORK_TEST_CHECK(data->get(0).isDouble(), "data type");
+            ROBOTTESTINGFRAMEWORK_TEST_REPORT(Asserter::format("Got %s", data->toString().c_str()));
         }
     }
 
@@ -136,4 +136,4 @@ public:
     }
 };
 
-PREPARE_PLUGIN(TestAssignmentProducerConsumer)
+ROBOTTESTINGFRAMEWORK_PREPARE_PLUGIN(TestAssignmentProducerConsumer)
